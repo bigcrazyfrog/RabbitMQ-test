@@ -14,6 +14,7 @@ spec:
       labels:
         app: {{ include "rabbitmq-dev.name" . }}
     spec:
+      serviceAccountName: image-pull-sa
       containers:
         - name: {{ include "rabbitmq-dev.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
