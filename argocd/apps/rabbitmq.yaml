@@ -7,16 +7,21 @@ spec:
   project: notifications
 
   source:
-    repoURL: https://github.com/bigcrazyfrog/RabbitMQ-test.git
-    targetRevision: main
-    path: k8s/rabbitmq
-    helm:
-      releaseName: rabbitmq
+    - repoURL: https://github.com/bigcrazyfrog/RabbitMQ-test.git
+      targetRevision: main
+      path: k8s/rabbitmq
+      directory:
+        recurse: true        # чтобы подхватить все yaml (secret и т.п.)
+      ref: values            # чтобы потом сослаться на этот source как на $values
+
+    # 2) внешний Helm-чарт bitnami/rabbitmq
+    - repoURL: https://charts.bitnami.com/bitnami
       chart: rabbitmq
-      repoURL: https://charts.bitnami.com/bitnami
-      version: 16.0.0
-      valueFiles:
-        - values-dev.yaml
+      targetRevision: 16.0.0
+      helm:
+        releaseName: rabbitmq
+        valueFiles:
+          - $values/values-dev.yaml   # берем values-dev.yaml из первого source’а
 
   destination:
     server: https://kubernetes.default.svc
