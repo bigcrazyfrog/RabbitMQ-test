@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rabbitmq
+  namespace: argocd
+spec:
+  project: notifications
+
+  source:
+    repoURL: https://github.com/bigcrazyfrog/RabbitMQ-test.git
+    targetRevision: main
+    path: k8s/rabbitmq
+    helm:
+      releaseName: rabbitmq
+      chart: rabbitmq
+      repoURL: https://charts.bitnami.com/bitnami
+      version: 16.0.0
+      valueFiles:
+        - values-dev.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rabbitmq
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
