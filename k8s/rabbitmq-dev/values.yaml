@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: rabbitmq
+  tag: "3.13-management"   # образ с management UI на 15672
+  pullPolicy: IfNotPresent
+
+rabbitmq:
+  username: devuser        # dev-логин (можешь переопределить параметрами в ArgoCD)
+  password: devpassword    # dev-пароль
+
+service:
+  type: ClusterIP
+  amqpPort: 5672
+  managementPort: 15672
+
+ingress:
+  enabled: true
+  className: nginx         # если у тебя другой ingressClass — поменяй
+  annotations: {}
+  hosts:
+    - host: rabbitmq-dev.mycum.ru
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []                  # оставляем пустым — будет HTTP, не HTTPS
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "256Mi"
+  limits:
+    cpu: "500m"
+    memory: "512Mi"

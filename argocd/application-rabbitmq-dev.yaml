@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rabbitmq-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<your-org>/<your-repo>.git   # замени
+    targetRevision: main                                     # нужная ветка
+    path: k8s/rabbitmq-dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rabbitmq-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

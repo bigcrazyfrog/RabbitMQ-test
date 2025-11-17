@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "rabbitmq-dev.fullname" . }}
+  labels:
+    app: {{ include "rabbitmq-dev.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "rabbitmq-dev.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "rabbitmq-dev.name" . }}
+    spec:
+      containers:
+        - name: {{ include "rabbitmq-dev.name" . }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: {{ .Values.rabbitmq.username | quote }}
+            - name: RABBITMQ_DEFAULT_PASS
+              value: {{ .Values.rabbitmq.password | quote }}
+          ports:
+            - name: amqp
+              containerPort: {{ .Values.service.amqpPort }}
+            - name: http
+              containerPort: {{ .Values.service.managementPort }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

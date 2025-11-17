@@ -1,0 +1,6 @@
+apiVersion: v2
+name: rabbitmq-dev
+description: Simple RabbitMQ dev instance with HTTP management UI
+type: application
+version: 0.1.0
+appVersion: "3.13"
