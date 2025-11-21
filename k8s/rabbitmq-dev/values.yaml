@@ -13,7 +13,7 @@ service:
   type: ClusterIP
   amqpPort: 5672
   managementPort: 15672
-  nodePort: 31672
+#  nodePort: 31672
 
 ingress:
   enabled: true
