@@ -24,7 +24,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls: []                  # оставляем пустым — будет HTTP, не HTTPS
+  tls:
+    - hosts:
+        - rabbitmq-dev.mycum.ru
+      secretName: rabbitmq-dev-tls
 
 resources:
   requests:
