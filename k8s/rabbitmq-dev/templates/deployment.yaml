@@ -1,10 +1,11 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "rabbitmq-dev.fullname" . }}
   labels:
     app: {{ include "rabbitmq-dev.name" . }}
 spec:
+  serviceName: {{ include "rabbitmq-dev.fullname" . }}
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -29,5 +30,17 @@ spec:
               containerPort: {{ .Values.service.amqpPort }}
             - name: http
               containerPort: {{ .Values.service.managementPort }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/rabbitmq/mnesia
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 2Gi
