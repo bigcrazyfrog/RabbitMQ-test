@@ -17,7 +17,8 @@ service:
 ingress:
   enabled: true
   className: nginx         # если у тебя другой ingressClass — поменяй
-  annotations: {}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
   hosts:
     - host: rabbitmq-dev.mycum.ru
       paths:
