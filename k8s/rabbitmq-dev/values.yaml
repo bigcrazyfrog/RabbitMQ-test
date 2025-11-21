@@ -18,7 +18,8 @@ ingress:
   enabled: true
   className: nginx         # если у тебя другой ingressClass — поменяй
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
   hosts:
     - host: rabbitmq-dev.mycum.ru
       paths:
