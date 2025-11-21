@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: rabbitmq
-  tag: "3.13-management"   # образ с management UI на 15672
+  tag: "3.13-management"
   pullPolicy: IfNotPresent
 
 rabbitmq:
@@ -13,10 +13,11 @@ service:
   type: ClusterIP
   amqpPort: 5672
   managementPort: 15672
+  nodePort: 31672
 
 ingress:
   enabled: true
-  className: nginx         # если у тебя другой ingressClass — поменяй
+  className: nginx
   annotations:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
